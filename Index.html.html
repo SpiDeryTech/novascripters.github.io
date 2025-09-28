@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NovaScripters iOS Signer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      color: white;
+      background: black;
+      overflow: hidden;
+    }
+    /* Stars background */
+    canvas#stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .container {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    h1 {
+      font-size: 26px;
+      color: #ff3333;
+    }
+    .typing {
+      display: inline-block;
+      border-right: 2px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .btn {
+      display: block;
+      margin: 15px auto;
+      padding: 15px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: white;
+      text-decoration: none;
+      width: 250px;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .btn-sign { background: linear-gradient(90deg, #007bff, #ff0000); }
+    .btn-dns { background: purple; }
+    .btn-discord { background: #5865F2; }
+    .btn-youtube { background: #FF0000; }
+    .btn-secret {
+      background: black;
+      border: 1px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    #secretText {
+      margin-top: 15px;
+      display: none;
+      color: white;
+      font-size: 14px;
+    }
+    input[type=file] { display: none; }
+    label.upload-btn {
+      background: #222;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin: 8px;
+      cursor: pointer;
+      display: inline-block;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <div class="container">
+    <h1 class="typing" id="title">Made by @NovaScripters</h1>
+
+    <!-- Discord + YouTube -->
+    <a href="https://discord.gg/GyEd639t3H" target="_blank" class="btn btn-discord">Join Discord</a>
+    <a href="https://www.youtube.com/@NovaScripters" target="_blank" class="btn btn-youtube">Subscribe YouTube</a>
+
+    <!-- Uploads -->
+    <label class="upload-btn">Choose IPA<input type="file" id="ipaFile" accept=".ipa"></label>
+    <label class="upload-btn">Choose Certificate (.p12)<input type="file" id="p12File" accept=".p12"></label>
+    <label class="upload-btn">Choose Provision (.mobileprovision)<input type="file" id="mobileprovisionFile" accept=".mobileprovision"></label>
+
+    <!-- Buttons -->
+    <button class="btn btn-sign" onclick="signAndInstall()">Sign & Install IPA</button>
+    <a href="https://novascripters.github.io/SpiDery-iOS-DNS.mobileconfig" class="btn btn-dns">Install Anti-Revoke DNS</a>
+    <button class="btn btn-secret" onclick="revealSecret()">🔒 Secret</button>
+    <div id="secretText">My Real Name Is Actually Awn Shahid From Pakistan</div>
+  </div>
+
+  <script>
+    // Typing effect
+    const title = document.getElementById("title");
+    const text = title.textContent;
+    let i = 0;
+    title.textContent = "";
+    const typing = setInterval(() => {
+      if (i < text.length) {
+        title.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(typing);
+        setTimeout(() => {
+          let j = text.length;
+          const deleting = setInterval(() => {
+            if (j > 0) {
+              title.textContent = text.substring(0, j-1);
+              j--;
+            } else {
+              clearInterval(deleting);
+            }
+          }, 100);
+        }, 5000);
+      }
+    }, 120);
+
+    // Secret button
+    function revealSecret() {
+      document.getElementById("secretText").style.display = "block";
+    }
+
+    // Fake signer (placeholder)
+    function signAndInstall() {
+      alert("Signing not implemented yet. Upload files and connect backend.");
+    }
+
+    // Stars background
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2});
+    }
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, 2*Math.PI);
+        ctx.fill();
+        star.y += 0.2;
+        if (star.y > canvas.height) star.y = 0;
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+  </script>
+</body>
+</html>
