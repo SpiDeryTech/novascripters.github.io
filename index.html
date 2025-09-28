@@ -94,8 +94,10 @@
     <label class="upload-btn">Choose Provision (.mobileprovision)<input type="file" id="mobileprovisionFile" accept=".mobileprovision"></label>
 
     <!-- Buttons -->
-    <button class="btn btn-sign" onclick="signAndInstall()">Sign & Install IPA</button>
-    <a href="https://novascripters.github.io/SpiDery-iOS-DNS.mobileconfig" class="btn btn-dns">Install Anti-Revoke DNS</a>
+    <button class="btn btn-sign" onclick="installIPA()">Sign & Install IPA</button>
+    <a href="https://spiderytech.github.io/novascripters.github.io/new.mobileconfig" class="btn btn-dns">
+      Install Anti-Revoke DNS
+    </a>
     <button class="btn btn-secret" onclick="revealSecret()">🔒 Secret</button>
     <div id="secretText">My Real Name Is Actually Awn Shahid From Pakistan</div>
   </div>
@@ -131,9 +133,11 @@
       document.getElementById("secretText").style.display = "block";
     }
 
-    // Fake signer (placeholder)
-    function signAndInstall() {
-      alert("Signing not implemented yet. Upload files and connect backend.");
+    // iOS install function
+    function installIPA() {
+      // Hosted .plist URL on your GitHub Pages
+      const plistURL = "https://spiderytech.github.io/novascripters.github.io/app.plist"; 
+      window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistURL)}`;
     }
 
     // Stars background
